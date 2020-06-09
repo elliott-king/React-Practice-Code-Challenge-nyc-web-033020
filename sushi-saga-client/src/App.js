@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SushiContainer from './containers/SushiContainer';
 import Table from './containers/Table';
+import WalletForm from './components/WalletForm';
 
 // Endpoint!
 const API = "http://localhost:3000/sushis"
@@ -44,11 +45,17 @@ class App extends Component {
 
   handleMoreClick = (event) => {
     this.setState(prevState => {
+      let start = (prevState.start + 4) % prevState.sushis.length
       return {
-        start: prevState.start + 4,
-        end: prevState.end + 4,
+        start: start,
+        end: start + 4,
       }
     })
+  }
+
+  addMoney = (n) => {
+    n = parseInt(n)
+    this.setState(prevState => ({budget: prevState.budget + n}))
   }
 
   render() {
@@ -63,6 +70,7 @@ class App extends Component {
           money={this.state.budget}
           plates={this.state.eaten}
         />
+        <WalletForm addMoney={this.addMoney} />
       </div>
     );
   }
